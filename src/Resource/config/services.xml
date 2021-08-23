@@ -1,0 +1,22 @@
+<?xml version="1.0" ?>
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+    <services>
+        <service id="HelpPC\Bundle\SupervisorBundle\Manager\SupervisorManager" public="true">
+            <argument>%supervisor.servers%</argument>
+            <argument type="service" id="Http\Client\HttpClient"/>
+            <argument type="service" id="Http\Message\MessageFactory"/>
+        </service>
+        <service id="HelpPC\Bundle\SupervisorBundle\Controller\SupervisorController" public="true">
+            <argument type="service" id="HelpPC\Bundle\SupervisorBundle\Manager\SupervisorManager"/>
+            <argument type="service" id="Symfony\Contracts\Translation\TranslatorInterface"/>
+            <call method="setContainer">
+                <argument type="service" id="service_container" />
+            </call>
+
+            <tag name="controller.service_arguments" />
+        </service>
+    </services>
+
+</container>
