@@ -50,7 +50,7 @@ class QueueConfigurationCommand extends Command
 
         $rows = [];
         foreach($consumers as $consumer) {
-            $rows[] = [$consumer['queue'], $consumer['consumer'] ?? '', $consumer['numprocs'] ?? ''];
+            $rows[] = [$consumer['name'], $consumer['consumer'] ?? '', $consumer['numprocs'] ?? ''];
             $rows[] = new TableSeparator();
             foreach ($consumer['thresholds'] as $threashold) {
                 $rows[] = [new TableCell($threashold['messages'], ['colspan' => 2, 'style' => new TableCellStyle(['align' => 'right', 'cellFormat' => '<info>%s</info>'])]), $threashold['num']];

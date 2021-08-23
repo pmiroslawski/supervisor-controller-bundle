@@ -14,10 +14,10 @@ class Configuration
     public function execute(?string $queue) : array
     {
         if ($queue === null) {
-            return $this->queues['configuration'];
+            return $this->queues;
         }
 
-        $queues = array_column($this->queues['configuration'], null, 'queue');
+        $queues = array_column($this->queues, null, 'name');
         if (empty($queues[$queue])) {
             throw new \InvalidArgumentException(sprintf('The queue name "%s" has not been configured.', $queue));
         }
