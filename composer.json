@@ -1,0 +1,28 @@
+{
+	"name" : "pmiroslawski/supervisor-controller-bundle",
+	"description" : "PHP Symfony Bundle which manage of supervisor processes",
+	"type" : "symfony-bundle",
+	"homepage" : "https://github.com/pmiroslawski/supervisor-controller-bundle",
+	"license" : "MIT",
+	"authors" : [{
+			"name" : "Pawel Miroslawski",
+			"email" : "pmiroslawski@gmail.com"
+		}
+	],
+	"autoload" : {
+		"psr-4" : {
+			"Bit9\\SupervisorControllerBundle\\" : "src/"
+		}
+	},
+	"require" : {
+		"php" : ">7.4",
+                "symfony/framework-bundle": "^5",
+                "symfony/yaml": "^5",
+		"symfony/config": "^5",
+		"symfony/console": "^5",
+		"helppc/supervisor-bundle": "^1"
+        },
+	"require-dev" : {
+		"symfony/var-dumper" : "^5"
+	}
+}
