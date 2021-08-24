@@ -6,6 +6,7 @@ use Bit9\SupervisorControllerBundle\Event\ProcessStartedEvent;
 use HelpPC\Bundle\SupervisorBundle\Manager\SupervisorManager;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Supervisor\Process;
+use Bit9\SupervisorControllerBundle\Exception\SupervisorControllerException;
 
 class ProcessesStart
 {
@@ -30,8 +31,13 @@ class ProcessesStart
                     foreach($plist as $process) {
                         $process_name = sprintf("%s:%s", $process['group'], $process->getName());
 
-                        if ($supervisor->startProcess($process_name)) {
-                            $this->dispatcher->dispatch(new ProcessStartedEvent($process_name));
+                        try {
+                            if ($supervisor->startProcess($process_name)) {
+                                $this->dispatcher->dispatch(new ProcessStartedEvent($process_name));
+                            }
+                        }
+                        catch (\Exception $e) {
+                            throw new SupervisorControllerException($e->getMessage(), $e->getCode(), $e);
                         }
 
                         $running[] = $process;

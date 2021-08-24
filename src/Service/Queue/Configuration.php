@@ -2,6 +2,8 @@
 
 namespace Bit9\SupervisorControllerBundle\Service\Queue;
 
+use Bit9\SupervisorControllerBundle\Exception\SupervisorControllerException;
+
 class Configuration
 {
     private $queues;
@@ -19,7 +21,7 @@ class Configuration
 
         $queues = array_column($this->queues, null, 'name');
         if (empty($queues[$queue])) {
-            throw new \InvalidArgumentException(sprintf('The queue name "%s" has not been configured.', $queue));
+            throw new SupervisorControllerException(sprintf('The queue name "%s" has not been configured.', $queue));
         }
 
         return $queues[$queue];

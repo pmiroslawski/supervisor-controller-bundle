@@ -4,6 +4,7 @@ namespace Bit9\SupervisorControllerBundle\Service\Supervisor;
 
 use HelpPC\Bundle\SupervisorBundle\Manager\SupervisorManager;
 use Supervisor\Supervisor;
+use Bit9\SupervisorControllerBundle\Exception\SupervisorControllerException;
 
 class ProgramStatus
 {
@@ -25,7 +26,7 @@ class ProgramStatus
         }
 
         if (empty($programs)) {
-            throw new \RuntimeException(sprintf("Program '%s' has not beed defined in any supervisor instance.", $program));
+            throw new SupervisorControllerException(sprintf("Program '%s' has not beed defined in any supervisor instance.", $program));
         }
 
         return $programs;

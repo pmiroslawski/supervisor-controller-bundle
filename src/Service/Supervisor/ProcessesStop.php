@@ -6,6 +6,7 @@ use Bit9\SupervisorControllerBundle\Event\ProcessStoppedEvent;
 use HelpPC\Bundle\SupervisorBundle\Manager\SupervisorManager;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Supervisor\Process;
+use Bit9\SupervisorControllerBundle\Exception\SupervisorControllerException;
 
 class ProcessesStop
 {
@@ -31,8 +32,13 @@ class ProcessesStop
                     foreach($plist as $process) {
                         $process_name = sprintf("%s:%s", $process['group'], $process->getName());
 
-                        if ($supervisor->stopProcess($process_name)) {
-                            $this->dispatcher->dispatch(new ProcessStoppedEvent($process_name));
+                        try {
+                            if ($supervisor->stopProcess($process_name)) {
+                                $this->dispatcher->dispatch(new ProcessStoppedEvent($process_name));
+                            }
+                        }
+                        catch (\Exception $e) {
+                            throw new SupervisorControllerException($e->getMessage(), $e->getCode(), $e);
                         }
 
                         $running[] = $process;
