@@ -3,22 +3,32 @@
 namespace Bit9\SupervisorControllerBundle\Service\Supervisor;
 
 use Supervisor\Process;
+use Psr\EventDispatcher\EventDispatcherInterface;
+use Bit9\SupervisorControllerBundle\Event\ProcessesStoppedEvent;
+use Bit9\SupervisorControllerBundle\Event\ProcessesStartedEvent;
 
 class ProgramUpdate
 {
-    private ProgramStatus $statusService;
+    public const PROGRAM_PROCESSES_INCREASED = 1;
+    public const PROGRAM_PROCESSES_NOT_CHANGED = 0;
+    public const PROGRAM_PROCESSES_DECREASED = -1;
 
+    private ProgramStatus $statusService;
     private ProcessesStart $processesStartService;
     private ProcessesStop $processesStopService;
 
-    public function __construct(ProgramStatus $status, ProcessesStart $processesStartService, ProcessesStop $processesStopService)
+    private EventDispatcherInterface $dispatcher;
+
+    public function __construct(ProgramStatus $status, ProcessesStart $processesStartService, ProcessesStop $processesStopService, EventDispatcherInterface $dispatcher)
     {
         $this->statusService = $status;
         $this->processesStartService = $processesStartService;
         $this->processesStopService = $processesStopService;
+
+        $this->dispatcher = $dispatcher;
     }
 
-    public function execute(string $program, int $running = 3) : array
+    public function execute(string $program, int $running = 3) : int
     {
         $states = $this->statusService->execute($program);
 
@@ -28,14 +38,24 @@ class ProgramUpdate
         }
 
         if ($active > $running) {
-            $this->processesStopService->execute($states[$program], $active - $running);
+            $num = $active - $running;
+
+            $this->processesStopService->execute($states[$program], $num);
+            $this->dispatcher->dispatch(new ProcessesStoppedEvent($states[$program], $num));
+
+            return self::PROGRAM_PROCESSES_DECREASED;
         }
 
         if ($active < $running) {
-            $this->processesStartService->execute($states[$program], $running - $active);
+            $num = $running - $active;
+
+            $this->processesStartService->execute($states[$program], $num);
+            $this->dispatcher->dispatch(new ProcessesStartedEvent($states[$program], $num));
+
+            return self::PROGRAM_PROCESSES_INCREASED;
         }
 
-        return [];
+        return self::PROGRAM_PROCESSES_NOT_CHANGED;
     }
 
     private function countActiveProcessNum(array $server): int
