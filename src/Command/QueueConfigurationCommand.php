@@ -1,4 +1,5 @@
-<?php
+<?php declare(strict_types=1);
+
 namespace Bit9\SupervisorControllerBundle\Command;
 
 use Bit9\SupervisorControllerBundle\Service\Queue\Configuration;

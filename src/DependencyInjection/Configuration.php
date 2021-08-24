@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Bit9\SupervisorControllerBundle\DependencyInjection;
 
@@ -10,8 +10,9 @@ class Configuration implements ConfigurationInterface
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder('bit9_supervisor_controller');
+        $rootNode = $treeBuilder->getRootNode();
 
-        $treeBuilder->getRootNode()
+        $rootNode
             ->children()
                 ->arrayNode('queues')
                 ->requiresAtLeastOneElement()
