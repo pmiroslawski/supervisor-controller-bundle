@@ -2,16 +2,20 @@
 
 namespace Bit9\SupervisorControllerBundle\Service\Supervisor;
 
+use Bit9\SupervisorControllerBundle\Event\ProcessStartedEvent;
 use HelpPC\Bundle\SupervisorBundle\Manager\SupervisorManager;
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Supervisor\Process;
 
 class ProcessesStart
 {
     private SupervisorManager $supervisorManager;
+    private EventDispatcherInterface $dispatcher;
 
-    public function __construct(SupervisorManager $supervisorManager)
+    public function __construct(SupervisorManager $supervisorManager, EventDispatcherInterface $dispatcher)
     {
         $this->supervisorManager = $supervisorManager;
+        $this->dispatcher = $dispatcher;
     }
 
     public function execute(array $processes, int $start_num) : array
@@ -24,7 +28,12 @@ class ProcessesStart
             foreach($list as $status => $plist) {
                 if (in_array($status, [Process::STOPPED, Process::STOPPING])) {
                     foreach($plist as $process) {
-                        $supervisor->startProcess(sprintf("%s:%s", $process['group'], $process->getName()));
+                        $process_name = sprintf("%s:%s", $process['group'], $process->getName());
+
+                        if ($supervisor->startProcess($process_name)) {
+                            $this->dispatcher->dispatch(new ProcessStartedEvent($process_name));
+                        }
+
                         $running[] = $process;
                         if (++$started >= $start_num) {
                             return $running;

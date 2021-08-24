@@ -18,16 +18,19 @@
 
         <service id="Bit9\SupervisorControllerBundle\Service\Supervisor\ProcessesStart" public="false">
             <argument type="service" id="HelpPC\Bundle\SupervisorBundle\Manager\SupervisorManager"/>
+            <argument type="service" id="Psr\EventDispatcher\EventDispatcherInterface"/>
         </service>
 
         <service id="Bit9\SupervisorControllerBundle\Service\Supervisor\ProcessesStop" public="false">
             <argument type="service" id="HelpPC\Bundle\SupervisorBundle\Manager\SupervisorManager"/>
+            <argument type="service" id="Psr\EventDispatcher\EventDispatcherInterface"/>
         </service>
 
         <service id="Bit9\SupervisorControllerBundle\Service\Supervisor\ProgramUpdate" public="false">
             <argument type="service" id="Bit9\SupervisorControllerBundle\Service\Supervisor\ProgramStatus"/>
             <argument type="service" id="Bit9\SupervisorControllerBundle\Service\Supervisor\ProcessesStart"/>
             <argument type="service" id="Bit9\SupervisorControllerBundle\Service\Supervisor\ProcessesStop"/>
+            <argument type="service" id="Psr\EventDispatcher\EventDispatcherInterface"/>
         </service>
 
         <service id="Bit9\SupervisorControllerBundle\Command\ProgramStatusCommand" public="true">
