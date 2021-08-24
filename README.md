@@ -6,6 +6,7 @@ Symfony bundle which manages supervisor processes automatically based on given t
 
 This package is currently in the active development.
 
+
 ## Requirements
 
 * [PHP 7.4](http://php.net/releases/7_4_0.php) or greater
