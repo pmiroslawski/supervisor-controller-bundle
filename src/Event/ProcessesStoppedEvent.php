@@ -13,18 +13,18 @@ class ProcessesStoppedEvent extends Event
     /**
      * Number of stopped processes
      */
-    protected int $stopped_num;
+    protected int $num_stopped;
 
     /**
      * Number of total running processes
      */
-    protected int $num;
+    protected int $num_running;
 
-    public function __construct(string $program_name, int $stopped_num, int $num)
+    public function __construct(string $program_name, int $stopped, int $running)
     {
         $this->program_name = $program_name;
-        $this->stopped_num = $stopped_num;
-        $this->num = $num;
+        $this->num_stopped = $stopped;
+        $this->num_running = $running;
     }
 
     public function getProgramName(): string
@@ -34,11 +34,11 @@ class ProcessesStoppedEvent extends Event
 
     public function getStoppedProcessesNum(): int
     {
-        return $this->stopped_num;
+        return $this->num_stopped;
     }
 
     public function getProcessesNum(): int
     {
-        return $this->num;
+        return $this->num_running;
     }
 }
