@@ -39,7 +39,7 @@ class ProgramUpdateCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $this->service->execute($input->getArgument('name'), $input->getArgument('numprocs'));
+        $this->service->execute($input->getArgument('name'), (int) $input->getArgument('numprocs'));
 
         return Command::SUCCESS;
     }

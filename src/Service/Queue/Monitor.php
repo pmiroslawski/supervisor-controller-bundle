@@ -34,6 +34,8 @@ class Monitor
             }
         }
 
+        $this->updateService->execute($config['consumer'], $set);
+
         return $set;
     }
 }
