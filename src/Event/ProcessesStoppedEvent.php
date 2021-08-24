@@ -20,10 +20,11 @@ class ProcessesStoppedEvent extends Event
      */
     protected int $num;
 
-    public function __construct(string $program_name, int $stopped_num)
+    public function __construct(string $program_name, int $stopped_num, int $num)
     {
         $this->program_name = $program_name;
         $this->stopped_num = $stopped_num;
+        $this->num = $num;
     }
 
     public function getProgramName(): string

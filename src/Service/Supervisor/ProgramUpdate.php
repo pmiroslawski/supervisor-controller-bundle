@@ -41,7 +41,7 @@ class ProgramUpdate
             $num = $active - $running;
 
             $this->processesStopService->execute($states[$program], $num);
-            $this->dispatcher->dispatch(new ProcessesStoppedEvent($states[$program], $num));
+            $this->dispatcher->dispatch(new ProcessesStoppedEvent($program, $num, $running));
 
             return self::PROGRAM_PROCESSES_DECREASED;
         }
@@ -50,7 +50,7 @@ class ProgramUpdate
             $num = $running - $active;
 
             $this->processesStartService->execute($states[$program], $num);
-            $this->dispatcher->dispatch(new ProcessesStartedEvent($states[$program], $num));
+            $this->dispatcher->dispatch(new ProcessesStartedEvent($program, $num, $running));
 
             return self::PROGRAM_PROCESSES_INCREASED;
         }
