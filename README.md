@@ -64,6 +64,28 @@ Additionally, bundle provides bunch of extra commands in supervisor namespace wh
     supervisor-controller:queue:monitor   Monitor a specified queue name
 ```
 
+## Events
+
+The bundle provides events and dispatches them in some specified situations. There are two groups of events
+
+- when bundle does start/stop processes one of below events is dispatching:
+```
+    Bit9\SupervisorControllerBundle\Event\ProcessesStartedEvent 
+    Bit9\SupervisorControllerBundle\Event\ProcessesStoppedEvent 
+```
+Both of them contains 
+    - consumer name (the group name) 
+    - number of started/stopped processes
+    - total number of running processes (after operation)
+
+- when bundle does start/stop a specified single process one of below events is dispatching:
+```
+    Bit9\SupervisorControllerBundle\Event\ProcessStartedEvent 
+    Bit9\SupervisorControllerBundle\Event\ProcessStoppedEvent 
+```
+Both of them contains 
+    - exact process name (the same as in supervisor)
+    - timestamp of started/stopped given process
 
 
 ## License
