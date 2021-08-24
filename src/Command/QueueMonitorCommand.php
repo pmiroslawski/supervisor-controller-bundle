@@ -39,7 +39,7 @@ class QueueMonitorCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $num = $this->service->execute($input->getArgument('queue'), $input->getArgument('messages_num'));
+        $num = $this->service->execute($input->getArgument('queue'), (int) $input->getArgument('messages_num'));
 
         $output->writeln(sprintf('<info>Num of processes: %s</info>', $num));
 
