@@ -4,6 +4,11 @@
 	"type" : "symfony-bundle",
 	"homepage" : "https://github.com/pmiroslawski/supervisor-controller-bundle",
 	"license" : "MIT",
+	"keywords": [
+		"supervisor",
+		"supervisord",
+		"supervisorctl"
+	],
 	"authors" : [{
 			"name" : "Pawel Miroslawski",
 			"email" : "pmiroslawski@gmail.com"
