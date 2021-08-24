@@ -68,24 +68,24 @@ Additionally, bundle provides bunch of extra commands in supervisor namespace wh
 
 The bundle provides events and dispatches them in some specified situations. There are two groups of events
 
-- when bundle does start/stop processes one of below events is dispatching:
+- when bundle does start/stop processes, one of the below events is dispatching:
 ```
     Bit9\SupervisorControllerBundle\Event\ProcessesStartedEvent 
     Bit9\SupervisorControllerBundle\Event\ProcessesStoppedEvent 
 ```
-Both of them contains 
-    - consumer name (the group name) 
-    - number of started/stopped processes
-    - total number of running processes (after operation)
+Both of them contain:
+- consumer name (the group name) 
+- number of started/stopped processes
+- total number of running processes (after operation)
 
-- when bundle does start/stop a specified single process one of below events is dispatching:
+- when bundle does start/stop a specified single process, one of the below events is dispatching:
 ```
     Bit9\SupervisorControllerBundle\Event\ProcessStartedEvent 
     Bit9\SupervisorControllerBundle\Event\ProcessStoppedEvent 
 ```
-Both of them contains 
-    - exact process name (the same as in supervisor)
-    - timestamp of started/stopped given process
+Both of them contain:
+- exact process name (the same as in supervisor)
+- timestamp of started/stopped given process
 
 
 ## License
