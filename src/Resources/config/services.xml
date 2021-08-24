@@ -1,0 +1,57 @@
+<?xml version="1.0" ?>
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+    <services>
+        <service id="Bit9\SupervisorControllerBundle\Service\Queue\Configuration" public="false">
+            <argument>%queues%</argument>
+        </service>
+
+        <service id="Bit9\SupervisorControllerBundle\Service\Queue\Monitor" public="true">
+            <argument type="service" id="Bit9\SupervisorControllerBundle\Service\Queue\Configuration"/>
+            <argument type="service" id="Bit9\SupervisorControllerBundle\Service\Supervisor\ProgramUpdate"/>
+        </service>
+
+        <service id="Bit9\SupervisorControllerBundle\Service\Supervisor\ProgramStatus" public="false">
+            <argument type="service" id="HelpPC\Bundle\SupervisorBundle\Manager\SupervisorManager"/>
+        </service>
+
+        <service id="Bit9\SupervisorControllerBundle\Service\Supervisor\ProcessesStart" public="false">
+            <argument type="service" id="HelpPC\Bundle\SupervisorBundle\Manager\SupervisorManager"/>
+        </service>
+
+        <service id="Bit9\SupervisorControllerBundle\Service\Supervisor\ProcessesStop" public="false">
+            <argument type="service" id="HelpPC\Bundle\SupervisorBundle\Manager\SupervisorManager"/>
+        </service>
+
+        <service id="Bit9\SupervisorControllerBundle\Service\Supervisor\ProgramUpdate" public="false">
+            <argument type="service" id="Bit9\SupervisorControllerBundle\Service\Supervisor\ProgramStatus"/>
+            <argument type="service" id="Bit9\SupervisorControllerBundle\Service\Supervisor\ProcessesStart"/>
+            <argument type="service" id="Bit9\SupervisorControllerBundle\Service\Supervisor\ProcessesStop"/>
+        </service>
+
+        <service id="Bit9\SupervisorControllerBundle\Command\ProgramStatusCommand" public="true">
+            <argument>null</argument>
+            <argument type="service" id="Bit9\SupervisorControllerBundle\Service\Supervisor\ProgramStatus"/>
+            <tag name="console.command" command="supervisor-controller:program:status"/>
+        </service>
+
+        <service id="Bit9\SupervisorControllerBundle\Command\ProgramUpdateCommand" public="true">
+            <argument>null</argument>
+            <argument type="service" id="Bit9\SupervisorControllerBundle\Service\Supervisor\ProgramUpdate"/>
+            <tag name="console.command" command="supervisor-controller:program:update"/>
+        </service>
+
+        <service id="Bit9\SupervisorControllerBundle\Command\QueueConfigurationCommand" public="true">
+            <argument>null</argument>
+            <argument type="service" id="Bit9\SupervisorControllerBundle\Service\Queue\Configuration"/>
+            <tag name="console.command" command="supervisor-controller:queue:config"/>
+        </service>
+
+        <service id="Bit9\SupervisorControllerBundle\Command\QueueMonitorCommand" public="true">
+            <argument>null</argument>
+            <argument type="service" id="Bit9\SupervisorControllerBundle\Service\Queue\Monitor"/>
+            <tag name="console.command" command="supervisor-controller:queue:monitor"/>
+        </service>
+    </services>
+</container>

@@ -50,3 +50,8 @@
 
 # Embedded web-server pid file
 /.web-server-pid
+
+# Eclipse
+.buildpath
+.project
+.settings
