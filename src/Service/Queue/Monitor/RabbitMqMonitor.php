@@ -27,7 +27,7 @@ class RabbitMqMonitor implements MonitorInterface
             $content = $this->doRequest($url);
         }
         catch (\Exception $e) {
-            throw new SupervisorControllerException(sprintf('Can\'t connect to "%s" queue (%s)', $config['name'], $url), null, $e);
+            throw new SupervisorControllerException(sprintf('Can\'t connect to "%s" queue (%s)', $config['name'], $url), 0, $e);
         }
 
         if (!isset($content['messages'])) {
