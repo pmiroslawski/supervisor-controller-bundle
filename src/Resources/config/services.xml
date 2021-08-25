@@ -6,10 +6,27 @@
         <service id="Bit9\SupervisorControllerBundle\Service\Queue\Configuration" public="false">
             <argument>%queues%</argument>
         </service>
+        
+        <service id="Bit9\SupervisorControllerBundle\Service\Queue\Monitor\RabbitMqMonitor" public="false">
+            <argument type="service" id="Symfony\Contracts\HttpClient\HttpClientInterface"/>
+        </service>
 
         <service id="Bit9\SupervisorControllerBundle\Service\Queue\Monitor" public="true">
             <argument type="service" id="Bit9\SupervisorControllerBundle\Service\Queue\Configuration"/>
+            <argument type="service" id="Bit9\SupervisorControllerBundle\Service\Queue\Conductor"/>
+            <call method="addMonitor">
+                <argument type="service" id="Bit9\SupervisorControllerBundle\Service\Queue\Monitor\RabbitMqMonitor"/>
+            </call>
+        </service>
+        
+        <service id="Bit9\SupervisorControllerBundle\Service\Queue\Conductor" public="true">
+            <argument type="service" id="Bit9\SupervisorControllerBundle\Service\Queue\Configuration"/>
             <argument type="service" id="Bit9\SupervisorControllerBundle\Service\Supervisor\ProgramUpdate"/>
+        </service>
+        
+        <service id="Bit9\SupervisorControllerBundle\Service\Queue\Watchdog" public="true">
+            <argument type="service" id="Bit9\SupervisorControllerBundle\Service\Queue\Monitor"/>
+            <argument type="service" id="Bit9\SupervisorControllerBundle\Service\Queue\Conductor"/>
         </service>
 
         <service id="Bit9\SupervisorControllerBundle\Service\Supervisor\ProgramStatus" public="false">
@@ -51,10 +68,22 @@
             <tag name="console.command" command="supervisor-controller:queue:config"/>
         </service>
 
-        <service id="Bit9\SupervisorControllerBundle\Command\QueueMonitorCommand" public="true">
+        <service id="Bit9\SupervisorControllerBundle\Command\QueueCheckCommand" public="true">
             <argument>null</argument>
             <argument type="service" id="Bit9\SupervisorControllerBundle\Service\Queue\Monitor"/>
-            <tag name="console.command" command="supervisor-controller:queue:monitor"/>
+            <tag name="console.command" command="supervisor-controller:queue:check"/>
+        </service>
+
+        <service id="Bit9\SupervisorControllerBundle\Command\QueueConductorCommand" public="true">
+            <argument>null</argument>
+            <argument type="service" id="Bit9\SupervisorControllerBundle\Service\Queue\Conductor"/>
+            <tag name="console.command" command="supervisor-controller:queue:conductor"/>
+        </service>
+
+        <service id="Bit9\SupervisorControllerBundle\Command\QueueWatchdogCommand" public="true">
+            <argument>null</argument>
+            <argument type="service" id="Bit9\SupervisorControllerBundle\Service\Queue\Watchdog"/>
+            <tag name="console.command" command="supervisor-controller:queue:watchdog"/>
         </service>
     </services>
 </container>
