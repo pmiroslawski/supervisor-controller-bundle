@@ -65,7 +65,10 @@ class QueueConfigurationCommand extends Command
                     (string) $threashold['num']
                 ];
             }
+            $rows[] = new TableSeparator();
         }
+
+        unset($rows[count($rows)-1]);
 
         $table = new Table($output);
         $table
