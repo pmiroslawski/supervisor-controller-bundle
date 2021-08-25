@@ -20,6 +20,10 @@ class Configuration
         }
 
         $queues = array_column($this->queues, null, 'name');
+        if ($queue === null) {
+            return $queues;
+        }
+
         if (empty($queues[$queue])) {
             throw new SupervisorControllerException(sprintf('The queue name "%s" has not been configured.', $queue));
         }
