@@ -2,40 +2,58 @@
 
 namespace Bit9\SupervisorControllerBundle\Service\Queue;
 
-use Bit9\SupervisorControllerBundle\Service\Supervisor\ProgramUpdate;
+use Bit9\SupervisorControllerBundle\Service\Queue\Monitor\MonitorInterface;
+use Bit9\SupervisorControllerBundle\Exception\SupervisorControllerException;
 
 class Monitor
 {
     private Configuration $configuration;
-    private ProgramUpdate $updateService;
+    private Conductor $updateService;
 
-    public function __construct(Configuration $configuration, ProgramUpdate $updateService)
+    private array $monitors = [];
+
+    public function __construct(Configuration $configuration, Conductor $updateService)
     {
         $this->configuration = $configuration;
         $this->updateService = $updateService;
     }
 
-    public function execute(string $queue, int $messages_num) : int
+    private function isTypeAllowed(string $type) : bool
+    {
+        $allowed = [
+            MonitorInterface::MONITOR_RABBITMQ,
+        ];
+
+        return in_array($type, $allowed);
+    }
+
+    private function getMonitor(string $type) : MonitorInterface
+    {
+        if (empty($this->monitors[$type])) {
+            throw new SupervisorControllerException(sprintf('Monitor type "%s" has not been defined.', $type));
+        }
+
+        return $this->monitors[$type];
+    }
+
+    public function addMonitor(MonitorInterface $monitor) : void
+    {
+        if (!$this->isTypeAllowed($monitor->identifier())) {
+            throw new SupervisorControllerException(sprintf('Monitor type "%s" is not allowed.', $monitor->identifier()));
+        }
+
+        $this->monitors[$monitor->identifier()] = $monitor;
+    }
+
+    public function execute(string $queue) : int
     {
         $config = $this->configuration->execute($queue);
+        $type = $config['type'];
 
-        $thresholds = [];
-        foreach($config['thresholds'] as $threshold) {
-            $thresholds[$threshold['messages']] = $threshold['num'];
+        if (!$this->isTypeAllowed($type)) {
+            throw new SupervisorControllerException(sprintf('Monitor type "%s" is not allowed.', $type));
         }
 
-        ksort($thresholds);
-
-        $set = $config['numprocs'];
-        foreach ($thresholds as $num => $numproc) {
-            if ($num >= $messages_num) {
-                $set = $numproc;
-                break;
-            }
-        }
-
-        $this->updateService->execute($config['consumer'], $set);
-
-        return $set;
+        return $this->getMonitor($type)->check($config);
     }
 }

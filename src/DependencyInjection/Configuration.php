@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Bit9\SupervisorControllerBundle\DependencyInjection;
 
@@ -18,6 +18,8 @@ class Configuration implements ConfigurationInterface
                 ->prototype('array')
                     ->children()
                         ->scalarNode('name')->defaultValue('messages')->end()
+                        ->scalarNode('host')->defaultValue('http://127.0.0.1:15672/api/queues/%2F/messages')->end()
+                        ->scalarNode('type')->defaultValue('rabbitmq')->end()
                         ->scalarNode('consumer')->defaultValue('messages_consumer')->end()
                         ->scalarNode('numprocs')->defaultValue('30')->end()
                         ->arrayNode('thresholds')
