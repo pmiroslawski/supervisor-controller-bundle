@@ -2,20 +2,17 @@
 
 namespace Bit9\SupervisorControllerBundle\Service\Queue;
 
-use Bit9\SupervisorControllerBundle\Service\Supervisor\ProgramUpdate;
 use Bit9\SupervisorControllerBundle\Service\Queue\Monitor\MonitorInterface;
 use Bit9\SupervisorControllerBundle\Exception\SupervisorControllerException;
 
 class Monitor
 {
-    public const MONITOR_RABBITMQ = 'rabbitmq';
-
     private Configuration $configuration;
-    private ProgramUpdate $updateService;
+    private Conductor $updateService;
 
     private array $monitors = [];
 
-    public function __construct(Configuration $configuration, ProgramUpdate $updateService)
+    public function __construct(Configuration $configuration, Conductor $updateService)
     {
         $this->configuration = $configuration;
         $this->updateService = $updateService;
@@ -24,7 +21,7 @@ class Monitor
     private function isTypeAllowed(string $type) : bool
     {
         $allowed = [
-            self::MONITOR_RABBITMQ,
+            MonitorInterface::MONITOR_RABBITMQ,
         ];
 
         return in_array($type, $allowed);
@@ -39,13 +36,13 @@ class Monitor
         return $this->monitors[$type];
     }
 
-    public function addMonitor(string $type, MonitorInterface $monitor) : void
+    public function addMonitor(MonitorInterface $monitor) : void
     {
-        if (!$this->isTypeAllowed($type)) {
-            throw new SupervisorControllerException(sprintf('Monitor type "%s" is not allowed.', $type));
+        if (!$this->isTypeAllowed($monitor->identifier())) {
+            throw new SupervisorControllerException(sprintf('Monitor type "%s" is not allowed.', $monitor->identifier()));
         }
 
-        $this->monitors[$type] = $monitor;
+        $this->monitors[$monitor->identifier()] = $monitor;
     }
 
     public function execute(string $queue) : int
