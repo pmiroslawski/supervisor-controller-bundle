@@ -58,10 +58,12 @@ Additionally, bundle provides bunch of extra commands in supervisor namespace wh
 
 ```
     supervisor-controller
-    supervisor-controller:program:status  Get the supervisor program prcocesses statuses
-    supervisor-controller:program:update  Run given number of processes for specified program
-    supervisor-controller:queue:config    Get configuration for the given queue name
-    supervisor-controller:queue:monitor   Monitor a specified queue name
+    supervisor-controller:program:status   Get the supervisor program prcocesses statuses
+    supervisor-controller:program:update   Run given number of processes for specified program
+    supervisor-controller:queue:check      Check a specified queue to see number of elements.
+    supervisor-controller:queue:conductor  Command run/stop some number of processes based on passed queue's elements number.
+    supervisor-controller:queue:config     Get configuration for the given queue name
+    supervisor-controller:queue:watchdog   Command checks queue and passed readed number of elements into queue conductor.
 ```
 
 ## Events
