@@ -2,7 +2,9 @@
 
 Symfony bundle which manages supervisor processes automatically based on given thresholds configuration. Bundle is implemented using the [helppc/supervisor-bundle](https://github.com/helppc/supervisor-bundle) library.
 
-## Status
+## Example of use
+
+Check this: [pmiroslawski/supervisor-controller-demo] (https://github.com/pmiroslawski/supervisor-controller-demo) to see the bundle in action.
 
 This package is currently in the active development.
 
