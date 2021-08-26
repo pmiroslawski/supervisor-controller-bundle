@@ -1,0 +1,2 @@
+- supervisor-controller:program:status - queue name as an argument
+- supervisor-controller:program:update - queue name as an argument
