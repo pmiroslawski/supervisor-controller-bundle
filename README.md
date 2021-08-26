@@ -6,7 +6,6 @@ Symfony bundle which manages supervisor processes automatically based on given t
 
 Check this: [pmiroslawski/supervisor-controller-demo](https://github.com/pmiroslawski/supervisor-controller-demo) to see the bundle in action.
 
-This package is currently in the active development.
 
 
 ## Requirements
